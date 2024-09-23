@@ -1,0 +1,97 @@
+using System;
+
+public interface ITransport{
+    void Move(); 
+    void FuelUp(); 
+}
+
+public class Car : ITransport
+{
+    public void Move()
+    {
+        Console.WriteLine("Скорость автомобиля: 100 км/ч");
+    }
+
+    public void FuelUp()
+    {
+        Console.WriteLine("Объем бака автомобиля: 50 литров");
+    }
+}
+
+public class Motorcycle : ITransport
+{
+    public void Move()
+    {
+        Console.WriteLine("Скорость мотоцикла: 120 км/ч");
+    }
+
+    public void FuelUp()
+    {
+        Console.WriteLine("Объем бака мотоцикла: 15 литров");
+    }
+}
+
+public class Plane : ITransport
+{
+    public void Move()
+    {
+        Console.WriteLine("Скорость самолета: 900 км/ч");
+    }
+
+    public void FuelUp()
+    {
+        Console.WriteLine("Объем бака самолета: 5000 литров");
+    }
+}
+
+public abstract class TransportFactory{
+    public abstract ITransport CreateTransport();
+}
+
+public class CarFactory : TransportFactory
+{
+    public override ITransport CreateTransport(){
+        return new Car();
+    }
+}
+
+public class MotorcycleFactory : TransportFactory
+{
+    public override ITransport CreateTransport(){
+        return new Motorcycle();
+    }
+}
+
+public class PlaneFactory : TransportFactor{
+    public override ITransport CreateTransport(){
+        return new Plane();
+    }
+}
+
+public class Program{
+    public static void Main(string[] args){
+        TransportFactory factory = null;
+
+        Console.WriteLine("Выберите транспортное средство: car, motorcycle, plane");
+        string choice = Console.ReadLine().ToLower();
+
+        switch (choice){
+            case "car":
+                factory = new CarFactory();
+                break;
+            case "motorcycle":
+                factory = new MotorcycleFactory();
+                break;
+            case "plane":
+                factory = new PlaneFactory();
+                break;
+            default:
+                Console.WriteLine("Неверный выбор!");
+                return;
+        }
+
+        ITransport transport = factory.CreateTransport();
+        transport.Move();
+        transport.FuelUp();
+    }
+}
