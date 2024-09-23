@@ -1,81 +1,171 @@
 using System;
 
-public interface ITransport{
-    void Move(); 
-    void FuelUp(); 
+public interface ITransport
+{
+    void Move();
+    void FuelUp();
 }
 
 public class Car : ITransport
 {
+    private string model;
+    private int speed;
+
+    public Car(string model, int speed)
+    {
+        this.model = model;
+        this.speed = speed;
+    }
+
     public void Move()
     {
-        Console.WriteLine("Скорость автомобиля: 100 км/ч");
+        Console.WriteLine($"Модель автомобиля: {model}, скорость: {speed} км/ч");
     }
 
     public void FuelUp()
     {
-        Console.WriteLine("Объем бака автомобиля: 50 литров");
+        Console.WriteLine("Заправка автомобиля бензином.");
     }
 }
 
 public class Motorcycle : ITransport
 {
+    private string model;
+    private int speed;
+
+    public Motorcycle(string model, int speed)
+    {
+        this.model = model;
+        this.speed = speed;
+    }
+
     public void Move()
     {
-        Console.WriteLine("Скорость мотоцикла: 120 км/ч");
+        Console.WriteLine($"Модель мотоцикла: {model}, скорость: {speed} км/ч");
     }
 
     public void FuelUp()
     {
-        Console.WriteLine("Объем бака мотоцикла: 15 литров");
+        Console.WriteLine("Заправка мотоцикла бензином.");
     }
 }
 
 public class Plane : ITransport
 {
+    private string model;
+    private int speed;
+
+    public Plane(string model, int speed)
+    {
+        this.model = model;
+        this.speed = speed;
+    }
+
     public void Move()
     {
-        Console.WriteLine("Скорость самолета: 900 км/ч");
+        Console.WriteLine($"Модель самолета: {model}, скорость: {speed} км/ч");
     }
 
     public void FuelUp()
     {
-        Console.WriteLine("Объем бака самолета: 5000 литров");
+        Console.WriteLine("Заправка самолета авиационным топливом.");
     }
 }
 
-public abstract class TransportFactory{
+public abstract class TransportFactory
+{
     public abstract ITransport CreateTransport();
 }
 
 public class CarFactory : TransportFactory
 {
-    public override ITransport CreateTransport(){
-        return new Car();
+    public override ITransport CreateTransport()
+    {
+        Console.WriteLine("Введите модель автомобиля:");
+        string model = Console.ReadLine();
+
+        Console.WriteLine("Введите максимальную скорость автомобиля (км/ч):");
+        int speed = int.Parse(Console.ReadLine());
+
+        return new Car(model, speed);
     }
 }
 
 public class MotorcycleFactory : TransportFactory
 {
-    public override ITransport CreateTransport(){
-        return new Motorcycle();
+    public override ITransport CreateTransport()
+    {
+        Console.WriteLine("Введите модель мотоцикла:");
+        string model = Console.ReadLine();
+
+        Console.WriteLine("Введите максимальную скорость мотоцикла (км/ч):");
+        int speed = int.Parse(Console.ReadLine());
+
+        return new Motorcycle(model, speed);
     }
 }
 
-public class PlaneFactory : TransportFactor{
-    public override ITransport CreateTransport(){
-        return new Plane();
+public class PlaneFactory : TransportFactory
+{
+    public override ITransport CreateTransport()
+    {
+        Console.WriteLine("Введите модель самолета:");
+        string model = Console.ReadLine();
+
+        Console.WriteLine("Введите максимальную скорость самолета (км/ч):");
+        int speed = int.Parse(Console.ReadLine());
+
+        return new Plane(model, speed);
     }
 }
 
-public class Program{
-    public static void Main(string[] args){
+public class Bicycle : ITransport
+{
+    private string model;
+    private int speed;
+
+    public Bicycle(string model, int speed)
+    {
+        this.model = model;
+        this.speed = speed;
+    }
+
+    public void Move()
+    {
+        Console.WriteLine($"Модель велосипеда: {model}, скорость: {speed} км/ч");
+    }
+
+    public void FuelUp()
+    {
+        Console.WriteLine("Велосипед не требует заправки.");
+    }
+}
+
+public class BicycleFactory : TransportFactory
+{
+    public override ITransport CreateTransport()
+    {
+        Console.WriteLine("Введите модель велосипеда:");
+        string model = Console.ReadLine();
+
+        Console.WriteLine("Введите максимальную скорость велосипеда (км/ч):");
+        int speed = int.Parse(Console.ReadLine());
+
+        return new Bicycle(model, speed);
+    }
+}
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
         TransportFactory factory = null;
 
-        Console.WriteLine("Выберите транспортное средство: car, motorcycle, plane");
+        Console.WriteLine("Выберите транспортное средство: car, motorcycle, plane, bicycle");
         string choice = Console.ReadLine().ToLower();
 
-        switch (choice){
+        switch (choice)
+        {
             case "car":
                 factory = new CarFactory();
                 break;
@@ -84,6 +174,9 @@ public class Program{
                 break;
             case "plane":
                 factory = new PlaneFactory();
+                break;
+            case "bicycle":
+                factory = new BicycleFactory();
                 break;
             default:
                 Console.WriteLine("Неверный выбор!");
